@@ -45,11 +45,6 @@ export const VMOONEY_ADDRESSES: Index = {
   mumbai: devConfigL2.vMOONEYToken,
 }
 
-export const CITIZEN_NFT_ADDRESSES: Index = {
-  ethereum: '',
-  polygon: '0xE8013d1B68FA9faF5C78DE4823f7F076A854407A',
-}
-
 export const VMOONEY_SWEEPSTAKES: string =
   defaultConfigL1.vMooneySweepstakesZeroG
 
@@ -75,3 +70,13 @@ const MONGO_URL = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_PAT
 export const mongoConfig = {
   url: MONGO_URL,
 }
+
+export const CITIZEN_NFT_ADDRESSES: Index = {
+  ethereum: '',
+  polygon: '0xE8013d1B68FA9faF5C78DE4823f7F076A854407A',
+}
+
+export const TICKET_TO_SPACE_ADDRESS =
+  process.env.NEXT_PUBLIC_CHAIN === 'mainnet'
+    ? '0x6434c90c9063F0Bed0800a23c75eBEdDF71b6c52' //polygon
+    : '0x5283b6035cfa7bb884b7f6a146fa6824ec9773c7' //mumbai
