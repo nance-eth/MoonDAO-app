@@ -11,12 +11,22 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
   const [winners, setWinners] = useState<Winner[]>([])
 
   async function getWinners() {
-    const winners: Winner[] = []
+    // const winners: Winner[] = []
 
     const verifiedNftsRes: any = await fetch('/api/db/nft')
     const verifiedNftsData = await verifiedNftsRes.json()
     const { data: verifiedNfts } = verifiedNftsData
-    for (let i = 0; i <= 10; i++) {
+
+    const unverifiedNfts = verifiedNfts.filter(
+      (vNft: any) => vNft.tokenId === 'xxx' || vNft.name.trim() === ''
+    )
+
+    const numberOfUnverifiedNfts =
+      supply - verifiedNfts.length + unverifiedNfts.length
+
+    setWinners([])
+
+    for (let i = 0; i <= 10 + numberOfUnverifiedNfts; i++) {
       try {
         const randomWordsId = await ttsContract.call('requestIds', [i])
         if (randomWordsId) {
@@ -31,8 +41,10 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
           ])
 
           const verifiedWinner = verifiedNfts.find(
-            (vNft: any) => vNft.tokenId === winningTokenId
+            (vNft: any) => vNft.tokenId.toString() === winningTokenId
           )
+
+          if (!verifiedWinner.name || verifiedWinner.name.trim() === '') return
 
           const winner = {
             tokenId: winningTokenId,
@@ -40,13 +52,13 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             name: verifiedWinner?.name || 'Unverified',
           }
 
-          winners.push(winner)
+          // winners.push(winner)
+          setWinners((prev) => [...prev, winner])
         }
       } catch (err) {
         console.log(err)
       }
     }
-    setWinners(winners)
   }
 
   useEffect(() => {
@@ -64,7 +76,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
       <div className="mt-5">
         <h2 className="text-xl font-bold">Winners</h2>
         {winners.length > 0 ? (
-          <div className="flex flex-col max-h-[600px] overflow-y-scroll items-center">
+          <div className="flex flex-col items-center">
             {winners.map((winner: any, i: number) => (
               <div
                 key={`winner-${i}`}
@@ -89,7 +101,14 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             ))}
           </div>
         ) : (
-          <div className="mt-3 px-5 lg:px-7 xl:px-10 py-12 lg:py-14 page-border-and-color font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-full lg:max-w-[1080px] text-slate-950 dark:text-white"></div>
+          <div className="flex flex-col items-center">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div
+                key={`winner-skeleton-${i}`}
+                className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[400px] h-[100px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white"
+              ></div>
+            ))}
+          </div>
         )}
       </div>
     </div>
