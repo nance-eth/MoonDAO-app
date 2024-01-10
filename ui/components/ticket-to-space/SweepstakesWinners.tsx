@@ -75,6 +75,14 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
 
       <div className="mt-5">
         <h2 className="text-xl font-bold">Winners</h2>
+        <div className="w-full flex justify-center">
+          <button
+            className="w-[250px] md:w-1/2 mt-4 p-1 border text-white hover:scale-105 transition-all duration-150 border-white hover:bg-white hover:text-moon-orange"
+            onClick={getWinners}
+          >
+            Refresh ↺
+          </button>
+        </div>
         {winners.length > 0 ? (
           <div className="flex flex-col items-center">
             {winners.map((winner: any, i: number) => (
