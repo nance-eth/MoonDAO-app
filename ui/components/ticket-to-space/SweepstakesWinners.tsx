@@ -1,5 +1,7 @@
+import { useAddress } from '@thirdweb-dev/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useHandleRead, useHandleWrite } from '../../lib/thirdweb/hooks'
 
 type Winner = {
   tokenId: string
@@ -8,7 +10,13 @@ type Winner = {
 }
 
 export function SweepstakesWinners({ ttsContract, supply }: any) {
+  const address = useAddress()
   const [winners, setWinners] = useState<Winner[]>([])
+
+  const { data: owner } = useHandleRead(ttsContract, 'owner')
+
+  const { mutateAsync: chooseWinner, isLoading: isLoadingWinner } =
+    useHandleWrite(ttsContract, 'chooseWinner')
 
   async function getWinners() {
     // const winners: Winner[] = []
@@ -17,16 +25,9 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
     const verifiedNftsData = await verifiedNftsRes.json()
     const { data: verifiedNfts } = verifiedNftsData
 
-    const unverifiedNfts = verifiedNfts.filter(
-      (vNft: any) => vNft.tokenId === 'xxx' || vNft.name.trim() === ''
-    )
-
-    const numberOfUnverifiedNfts =
-      supply - verifiedNfts.length + unverifiedNfts.length
-
     setWinners([])
 
-    for (let i = 0; i <= 10 + numberOfUnverifiedNfts; i++) {
+    for (let i = 0; i <= 10; i++) {
       try {
         const randomWordsId = await ttsContract.call('requestIds', [i])
         if (randomWordsId) {
@@ -43,8 +44,6 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
           const verifiedWinner = verifiedNfts.find(
             (vNft: any) => vNft.tokenId.toString() === winningTokenId
           )
-
-          if (!verifiedWinner.name || verifiedWinner.name.trim() === '') return
 
           const winner = {
             tokenId: winningTokenId,
@@ -63,8 +62,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
 
   useEffect(() => {
     if (ttsContract && supply) getWinners()
-    console.log(winners)
-  }, [ttsContract, supply])
+  }, [ttsContract, supply, isLoadingWinner])
 
   return (
     <div className="mt-3 px-5 lg:px-7 xl:px-10 py-12 lg:py-14 page-border-and-color font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-full lg:max-w-[1080px] text-slate-950 dark:text-white">
@@ -75,7 +73,15 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
 
       <div className="mt-5">
         <h2 className="text-xl font-bold">Winners</h2>
-        <div className="w-full flex justify-center">
+        <div className="w-full flex flex-col items-center">
+          {owner && address === owner && (
+            <button
+              className="w-[250px] md:w-1/2 mt-4 p-1 border text-white hover:scale-105 transition-all duration-150 border-white hover:bg-white hover:text-moon-orange"
+              onClick={chooseWinner}
+            >
+              Choose Winner
+            </button>
+          )}
           <button
             className="w-[250px] md:w-1/2 mt-4 p-1 border text-white hover:scale-105 transition-all duration-150 border-white hover:bg-white hover:text-moon-orange"
             onClick={getWinners}
