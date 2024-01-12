@@ -57,9 +57,8 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
       } catch (err) {
         console.log(err)
       }
-
-      setWinners(winners)
     }
+    setWinners(winners.reverse())
   }
 
   useEffect(() => {
@@ -98,7 +97,9 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
                 key={`winner-${i}`}
                 className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white"
               >
-                <h1 className="font-[Goodtimes] text-2xl">{`#${10 - i}`}</h1>
+                <h1 className="font-[Goodtimes] text-2xl">{`#${
+                  10 - winners.length + i + 1
+                }`}</h1>
                 <div className="w-[2px] h-12 bg-[#00000020] dark:bg-[#ffffff20]" />
                 <div className="flex flex-col">
                   <p>{`Name : ${winner.name}`}</p>
