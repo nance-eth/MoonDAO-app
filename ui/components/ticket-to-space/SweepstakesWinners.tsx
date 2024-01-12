@@ -16,7 +16,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
   const { data: owner } = useHandleRead(ttsContract, 'owner')
 
   const { mutateAsync: chooseWinner, isLoading: isLoadingWinner } =
-    useHandleWrite(ttsContract, 'chooseWinner')
+    useHandleWrite(ttsContract, 'chooseWinner', [600000])
 
   async function getWinners() {
     // const winners: Winner[] = []
@@ -25,7 +25,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
     const verifiedNftsData = await verifiedNftsRes.json()
     const { data: verifiedNfts } = verifiedNftsData
 
-    setWinners([])
+    const winners = []
 
     for (let i = 0; i <= 10; i++) {
       try {
@@ -52,11 +52,13 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
           }
 
           // winners.push(winner)
-          setWinners((prev) => [...prev, winner])
+          winners.push(winner)
         }
       } catch (err) {
         console.log(err)
       }
+
+      setWinners(winners)
     }
   }
 
@@ -116,12 +118,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
           </div>
         ) : (
           <div className="flex flex-col items-center">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                key={`winner-skeleton-${i}`}
-                className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[400px] h-[100px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white"
-              ></div>
-            ))}
+            <div className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[400px] h-[100px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white"></div>
           </div>
         )}
       </div>
