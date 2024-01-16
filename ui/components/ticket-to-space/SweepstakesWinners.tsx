@@ -1,7 +1,5 @@
-import { useAddress } from '@thirdweb-dev/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useHandleRead, useHandleWrite } from '../../lib/thirdweb/hooks'
 
 type Winner = {
   tokenId: string
@@ -10,13 +8,7 @@ type Winner = {
 }
 
 export function SweepstakesWinners({ ttsContract, supply }: any) {
-  const address = useAddress()
   const [winners, setWinners] = useState<Winner[]>([])
-
-  const { data: owner } = useHandleRead(ttsContract, 'owner')
-
-  const { mutateAsync: chooseWinner, isLoading: isLoadingWinner } =
-    useHandleWrite(ttsContract, 'chooseWinner', [600000])
 
   async function getWinners() {
     // const winners: Winner[] = []

@@ -15,7 +15,7 @@ export default function Sweepstakes() {
   const [supply, setSupply] = useState(0)
 
   const { contract: ttsContract } = useContract(
-    TICKET_TO_SPACE_ADDRESS,
+    '0x2b9496C22956E23CeC73299B9d3d3b7A9483D6Ff',
     ttsSweepstakesV2.abi
   )
 

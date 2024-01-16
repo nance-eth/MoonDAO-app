@@ -1,4 +1,4 @@
-import { Ethereum, Polygon, Sepolia } from '@thirdweb-dev/chains'
+import { Ethereum, Polygon } from '@thirdweb-dev/chains'
 import { MediaRenderer, useAddress, useOwnedNFTs } from '@thirdweb-dev/react'
 import { BigNumber, ethers } from 'ethers'
 import Link from 'next/link'
