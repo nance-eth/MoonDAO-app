@@ -35,14 +35,14 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             randomWordsId,
           ])
 
-          const winningTokenId = await randomWords[0].mod(supply).toString()
+          const winningTokenId = await randomWords[0].mod(supply)
 
           const ownerOfWinningTokenId = await ttsContract.call('ownerOf', [
-            winningTokenId,
+            winningTokenId.toString(),
           ])
 
           const verifiedWinner = verifiedNfts.find(
-            (vNft: any) => vNft.tokenId.toString() === winningTokenId
+            (vNft: any) => vNft.tokenId === winningTokenId._hex
           )
 
           const winner = {
