@@ -62,8 +62,11 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
   }
 
   useEffect(() => {
-    if (ttsContract && supply) getWinners()
-  }, [ttsContract, supply, isLoadingWinner])
+    const refresh = setInterval(() => {
+      if (ttsContract && supply) getWinners()
+    }, 5000)
+    return () => clearInterval(refresh)
+  }, [])
 
   return (
     <div className="mt-3 px-5 lg:px-7 xl:px-10 py-12 lg:py-14 page-border-and-color font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-full lg:max-w-[1080px] text-slate-950 dark:text-white">
@@ -75,14 +78,6 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
       <div className="mt-5">
         <h2 className="text-xl font-bold">Winners</h2>
         <div className="w-full flex flex-col items-center">
-          {owner && address === owner && (
-            <button
-              className="w-[250px] md:w-1/2 mt-4 p-1 border text-white hover:scale-105 transition-all duration-150 border-white hover:bg-white hover:text-moon-orange"
-              onClick={chooseWinner}
-            >
-              Choose Winner
-            </button>
-          )}
           <button
             className="w-[250px] md:w-1/2 mt-4 p-1 border text-white hover:scale-105 transition-all duration-150 border-white hover:bg-white hover:text-moon-orange"
             onClick={getWinners}
@@ -95,7 +90,9 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             {winners.map((winner: any, i: number) => (
               <div
                 key={`winner-${i}`}
-                className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white"
+                className={`flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white ${
+                  10 - winners.length + i + 1 === 1 && 'border-moon-gold'
+                }`}
               >
                 <h1 className="font-[Goodtimes] text-2xl">{`#${
                   10 - winners.length + i + 1
