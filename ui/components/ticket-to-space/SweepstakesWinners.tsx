@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -19,6 +20,12 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
 
     const winners = []
 
+    console.log(verifiedNfts)
+
+    const nft325 = verifiedNfts.find(
+      (vNft: any) => vNft.tokenId === BigNumber.from(325)._hex
+    )
+
     for (let i = 0; i <= 10; i++) {
       try {
         const randomWordsId = await ttsContract.call('requestIds', [i])
@@ -33,14 +40,18 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             winningTokenId.toString(),
           ])
 
-          const verifiedWinner = verifiedNfts.find(
+          const winnerNfts = verifiedNfts.filter(
+            (vNft: any) => vNft.address === ownerOfWinningTokenId
+          )
+
+          const verifiedWinner = winnerNfts.find(
             (vNft: any) => vNft.tokenId === winningTokenId._hex
           )
 
           const winner = {
             tokenId: winningTokenId,
             address: ownerOfWinningTokenId,
-            name: verifiedWinner?.name || 'Unverified',
+            name: verifiedWinner?.name || winnerNfts[0].name || 'Unverified',
           }
 
           // winners.push(winner)
