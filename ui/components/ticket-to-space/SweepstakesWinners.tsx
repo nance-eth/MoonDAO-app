@@ -8,6 +8,19 @@ type Winner = {
   name: string
 }
 
+const PRIZES = [
+  "🚀 Ticket to Space on Blue Origin's New Shepard!",
+  '💰 200,000 $MOONEY',
+  '💰 100,000 $MOONEY',
+  '💰 50,000 $MOONEY',
+  '💰 50,000 $MOONEY',
+  '💰 30,000 $MOONEY',
+  '💰 30,000 $MOONEY',
+  '💰 30,000 $MOONEY',
+  '💰 30,000 $MOONEY',
+  '💰 30,000 $MOONEY',
+]
+
 export function SweepstakesWinners({ ttsContract, supply }: any) {
   const [winners, setWinners] = useState<Winner[]>([])
 
@@ -95,7 +108,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
                   10 - winners.length + i + 1
                 }`}</h1>
                 <div className="w-[2px] h-12 bg-[#00000020] dark:bg-[#ffffff20]" />
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full">
                   <p>{`Name : ${winner.name}`}</p>
                   <p>{`Token Id : ${winner.tokenId}`}</p>
                   <Link
@@ -108,6 +121,7 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
                     )}...${winner?.address?.slice(-4)}`}
                   </Link>
                 </div>
+                <p className="w-full">{PRIZES[10 - winners.length + i]}</p>
               </div>
             ))}
           </div>
