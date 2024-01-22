@@ -20,12 +20,6 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
 
     const winners = []
 
-    console.log(verifiedNfts)
-
-    const nft325 = verifiedNfts.find(
-      (vNft: any) => vNft.tokenId === BigNumber.from(325)._hex
-    )
-
     for (let i = 0; i <= 10; i++) {
       try {
         const randomWordsId = await ttsContract.call('requestIds', [i])
@@ -40,18 +34,14 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             winningTokenId.toString(),
           ])
 
-          const winnerNfts = verifiedNfts.filter(
-            (vNft: any) => vNft.address === ownerOfWinningTokenId
-          )
-
-          const verifiedWinner = winnerNfts.find(
+          const verifiedWinner = verifiedNfts.find(
             (vNft: any) => vNft.tokenId === winningTokenId._hex
           )
 
           const winner = {
             tokenId: winningTokenId,
             address: ownerOfWinningTokenId,
-            name: verifiedWinner?.name || winnerNfts[0].name || 'Unverified',
+            name: verifiedWinner?.name || 'Unverified',
           }
 
           // winners.push(winner)
@@ -65,11 +55,15 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
   }
 
   useEffect(() => {
-    const refresh = setInterval(() => {
-      if (ttsContract && supply) getWinners()
-    }, 5000)
+    let refresh: any
+    if (ttsContract && supply) {
+      getWinners()
+      refresh = setInterval(() => {
+        getWinners()
+      }, 5000)
+    }
     return () => clearInterval(refresh)
-  }, [])
+  }, [ttsContract, supply])
 
   return (
     <div className="mt-3 px-5 lg:px-7 xl:px-10 py-12 lg:py-14 page-border-and-color font-RobotoMono w-[336px] sm:w-[400px] lg:mt-10 lg:w-full lg:max-w-[1080px] text-slate-950 dark:text-white">
