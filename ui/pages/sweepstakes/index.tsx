@@ -54,7 +54,6 @@ export default function Sweepstakes() {
         mooneyContract={mooneyContract}
         mooneyETHContract={mooneyETHContract}
       />
-      <SweepstakesWinners ttsContract={ttsContract} supply={supply} />
     </main>
   )
 }
