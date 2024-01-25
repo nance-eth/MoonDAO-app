@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react'
 import ChainContext from '../../lib/thirdweb/chain-context'
 import Head from '../../components/layout/Head'
 import { SweepstakesMinting } from '../../components/ticket-to-space/SweepstakesMinting'
-import { SweepstakesWinners } from '../../components/ticket-to-space/SweepstakesWinners'
 import ERC20 from '../../const/abis/ERC20.json'
 import ttsSweepstakesV2 from '../../const/abis/ttsSweepstakesV2.json'
 import { MOONEY_ADDRESSES, TICKET_TO_SPACE_ADDRESS } from '../../const/config'
@@ -15,7 +14,7 @@ export default function Sweepstakes() {
   const [supply, setSupply] = useState(0)
 
   const { contract: ttsContract } = useContract(
-    '0x2b9496C22956E23CeC73299B9d3d3b7A9483D6Ff',
+    TICKET_TO_SPACE_ADDRESS,
     ttsSweepstakesV2.abi
   )
 

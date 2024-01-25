@@ -1,11 +1,9 @@
-import { BigNumber } from 'ethers'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 type Winner = {
   tokenId: string
   address: string
-  name: string
 }
 
 const PRIZES = [
@@ -21,7 +19,7 @@ const PRIZES = [
   '💰 30,000 $MOONEY',
 ]
 
-function Winner({ number, name, tokenId, address, prize }: any) {
+function Winner({ number, tokenId, address, prize }: any) {
   return (
     <div
       className={`flex items-center gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[300px] md:w-[400px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white ${
@@ -41,7 +39,6 @@ function Winner({ number, name, tokenId, address, prize }: any) {
         }`}
       />
       <div className="flex flex-col w-full">
-        <p>{`Name : ${name}`}</p>
         <p>{`Token Id : ${tokenId}`}</p>
         <Link
           href={'https://polygonscan.com/address/' + address}
@@ -66,12 +63,6 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
   const [winners, setWinners] = useState<Winner[]>([])
 
   async function getWinners() {
-    // const winners: Winner[] = []
-
-    const verifiedNftsRes: any = await fetch('/api/db/nft')
-    const verifiedNftsData = await verifiedNftsRes.json()
-    const { data: verifiedNfts } = verifiedNftsData
-
     const winners = []
 
     for (let i = 0; i <= 10; i++) {
@@ -88,14 +79,9 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             winningTokenId.toString(),
           ])
 
-          const verifiedWinner = verifiedNfts.find(
-            (vNft: any) => vNft.tokenId === winningTokenId._hex
-          )
-
           const winner = {
             tokenId: winningTokenId,
             address: ownerOfWinningTokenId,
-            name: verifiedWinner?.name || 'Unverified',
           }
 
           // winners.push(winner)
@@ -145,8 +131,8 @@ export function SweepstakesWinners({ ttsContract, supply }: any) {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <div className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[400px] h-[100px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white"></div>
+          <div className="flex flex-col items-start">
+            <div className="flex gap-4 px-5 lg:px-7 xl:px-10 py-6 border-2 dark:border-[#ffffff20] font-RobotoMono w-[400px] h-[100px] lg:mt-10 lg:w-3/4 lg:max-w-[1080px] text-slate-950 text-sm dark:text-white animate-pulse"></div>
           </div>
         )}
       </div>
