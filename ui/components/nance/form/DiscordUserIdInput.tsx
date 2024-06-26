@@ -42,10 +42,18 @@ export default function DiscordUserIdInput({
   )
 
   useEffect(() => {
+    if (val) {
+      setSelectedUser({
+        id: val,
+        username: 'A',
+        global_name: 'A',
+        avatar: ''
+      })
+    }
     if (disabled) {
       setVal('')
     }
-  }, [disabled, setVal])
+  }, [disabled, val, setVal])
 
   useDebounce(
     () => {

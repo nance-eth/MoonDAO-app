@@ -38,10 +38,6 @@ export default function RequestBudgetActionForm() {
           <h2 className="text-base font-semibold leading-7 text-white">
             Project team
           </h2>
-          {/* <p className="mt-1 text-sm leading-6 text-gray-400">
-            Use a permanent address where you can receive mail.
-          </p> */}
-
           {projectTeamFields.map((field, index) => (
             <div
               key={field.id}
