@@ -1,4 +1,5 @@
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/solid'
+import { InformationCircleIcon } from "@heroicons/react/20/solid"
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import AddressForm from './form/AddressForm'
 import DiscordUserIdForm from './form/DiscordUserIdForm'
@@ -61,6 +62,7 @@ export default function RequestBudgetActionForm() {
                 <AddressForm
                   label="Payout Address"
                   fieldName={`projectTeam.${index}.payoutAddress`}
+                  tooltip="Address where project payments will be sent"
                 />
               </div>
 
@@ -68,28 +70,30 @@ export default function RequestBudgetActionForm() {
                 <AddressForm
                   label="Voting Address"
                   fieldName={`projectTeam.${index}.votingAddress`}
+                  tooltip="Address where rewarded vMOONEY will be sent"
                 />
               </div>
 
-              <div className="sm:col-span-1 flex items-center">
-                <div className="w-full">
-                  <label className="label">
-                    <span className="label-text">Rocketeer?</span>
-                  </label>
-                  <input
-                    type="checkbox"
-                    className="h-8 w-8 mt-3"
-                    {...register(`projectTeam.${index}.isRocketeer`, {
-                      shouldUnregister: true,
-                    })}
-                  />
-                </div>
+              <div className="sm:col-span-1 flex flex-col mt-2">
+                <label className="flex flex-row">
+                  <span className="label-text whitespace-nowrap">Project Lead</span>
+                  <div className="tooltip" data-tip="Member that will attend weekly Townhall">
+                    <InformationCircleIcon className="ml-3 h-4 w-4 text-gray-400" />
+                  </div>
+                </label>
+                <input
+                  type="checkbox"
+                  className="mt-5 ml-7 h-8 w-8"
+                  {...register(`projectTeam.${index}.isRocketeer`, {
+                    shouldUnregister: true,
+                  })}
+                />
               </div>
 
               {index !== 0 && (
                 <div className="sm:col-span-1 flex items-center">
                   <button
-                    className="mt-7 btn btn-circle btn-outline btn-sm hover:text-black"
+                    className="ml-10 mt-10 btn btn-circle btn-outline btn-sm hover:text-black"
                     type="button"
                     onClick={() => projectTeamRemove(index)}
                   >
@@ -143,6 +147,7 @@ export default function RequestBudgetActionForm() {
                 <AddressForm
                   label="Address"
                   fieldName={`multisigTeam.${index}.address`}
+                  tooltip="Address that will be added as a Safe signer"
                 />
               </div>
             </div>
