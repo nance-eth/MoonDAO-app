@@ -4,11 +4,12 @@ import AddressForm from './form/AddressForm'
 import DiscordUserIdForm from './form/DiscordUserIdForm'
 import SafeTokenForm from './form/SafeTokenForm'
 import StringForm from './form/StringForm'
+import { useEffect } from "react"
 
 export default function RequestBudgetActionForm() {
   // form
 
-  const { register, control } = useFormContext()
+  const { register, control, watch } = useFormContext()
 
   const {
     fields: projectTeamFields,
@@ -30,6 +31,12 @@ export default function RequestBudgetActionForm() {
     control,
     name: 'budget',
   })
+
+  // DEBUG
+  // const watchAllFields = watch()
+  // useEffect(() => {
+  //   console.log('Form values:', watchAllFields)
+  // }, [watchAllFields])
 
   return (
     <div>
@@ -71,7 +78,7 @@ export default function RequestBudgetActionForm() {
                   </label>
                   <input
                     type="checkbox"
-                    className="h-8 w-8"
+                    className="h-8 w-8 mt-3"
                     {...register(`projectTeam.${index}.isRocketeer`, {
                       shouldUnregister: true,
                     })}

@@ -13,22 +13,23 @@ import useDiscordUserSearch, {
 } from '../../../lib/nance/DiscordUserSearch'
 import { classNames } from '../../../lib/utils/tailwind'
 
-export interface ProjectOption {
-  id: string
-  version: string
-  handle: string
-  projectId: number
-  metadataUri: string
+const noUser: DiscordUser = {
+  id: '',
+  username: '',
+  global_name: '',
+  avatar: ''
 }
 
 export default function DiscordUserIdInput({
   val,
+  displayVal,
   setVal,
   inputStyle = '',
   disabled = false,
 }: {
-  val: string | undefined
-  setVal: (v: string | undefined) => void
+  val: DiscordUser | undefined
+  displayVal: string
+  setVal: (v: DiscordUser | undefined) => void
   inputStyle?: string
   disabled?: boolean
 }) {
@@ -42,16 +43,8 @@ export default function DiscordUserIdInput({
   )
 
   useEffect(() => {
-    if (val) {
-      setSelectedUser({
-        id: val,
-        username: 'A',
-        global_name: 'A',
-        avatar: ''
-      })
-    }
     if (disabled) {
-      setVal('')
+      setVal(noUser)
     }
   }, [disabled, val, setVal])
 
@@ -69,7 +62,7 @@ export default function DiscordUserIdInput({
       as="div"
       value={selectedUser}
       onChange={(u: DiscordUser | null) => {
-        setVal(u?.id || '')
+        setVal(u || noUser)
         setSelectedUser(u)
       }}
       className="w-full"
@@ -84,7 +77,7 @@ export default function DiscordUserIdInput({
           )}
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(selectedUser: DiscordUser | undefined) =>
-            selectedUser ? `@${selectedUser.global_name}` : ''
+            selectedUser ? `@${selectedUser.global_name}` : displayVal ? `@${displayVal}` : ''
           }
         />
         <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
