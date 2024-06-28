@@ -13,6 +13,7 @@ import useDiscordUserSearch, {
 } from '../../../lib/nance/DiscordUserSearch'
 import { PhotoIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { classNames } from '../../../lib/utils/tailwind'
+import { LoadingSpinner } from "../../layout/LoadingSpinner"
 
 const noUser: DiscordUser = {
   id: '',
@@ -123,6 +124,14 @@ export default function DiscordUserIdInput({
                 )}
               </ComboboxOption>
             ))}
+
+          {loading && (
+            <div className="py-2 pl-3 pr-9 min-w-60 text-gray-500">
+              <div className="flex items-center">
+                <LoadingSpinner />
+              </div>
+            </div>
+          )}
 
           {data?.length === 0 && !loading && (
             <div className="py-2 pl-3 pr-9 whitespace-nowrap text-gray-500">
