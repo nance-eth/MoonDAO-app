@@ -66,7 +66,6 @@ export default function DiscordUserIdForm({
           }}
           render={({ field: { value } }) => (
             <DiscordUserIdInput val={value} displayVal={discordUsername} setVal={(v) => {
-              console.log(discordUsername)
               setValue(discordUserNameField, v?.global_name)
               setValue(fieldName, v?.id)
             }} />

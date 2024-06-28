@@ -70,7 +70,11 @@ export default function RequestBudgetActionForm() {
                 <AddressForm
                   label="Voting Address"
                   fieldName={`projectTeam.${index}.votingAddress`}
-                  tooltip="Address where rewarded vMOONEY will be sent"
+                  tooltip={`
+                    Address where rewarded vMOONEY will be sent.\n\n
+                    Note: Use a MetaMask or hardware wallet address. To use your MoonDAO Privy wallet, you must first export it.\n
+                    Using addresses from exchanges like Coinbase or Binance could result in loss of funds.
+                  `}
                 />
               </div>
 

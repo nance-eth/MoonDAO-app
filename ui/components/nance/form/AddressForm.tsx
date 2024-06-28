@@ -85,7 +85,7 @@ export default function AddressForm({
   return (
     <div>
       <label className="label flex items-center justify-start">
-        <span className="label-text">{label}</span>
+        <span className="label-text whitespace-nowrap">{label}</span>
         {tooltip && (
           <div className="tooltip ml-3" data-tip={tooltip}>
             <InformationCircleIcon className="h-4 w-4 text-gray-400" />

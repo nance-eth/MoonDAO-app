@@ -11,6 +11,7 @@ import { useDebounce } from 'react-use'
 import useDiscordUserSearch, {
   DiscordUser,
 } from '../../../lib/nance/DiscordUserSearch'
+import { PhotoIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { classNames } from '../../../lib/utils/tailwind'
 
 const noUser: DiscordUser = {
@@ -77,8 +78,9 @@ export default function DiscordUserIdInput({
           )}
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(selectedUser: DiscordUser | undefined) =>
-            selectedUser ? `@${selectedUser.global_name}` : displayVal ? `@${displayVal}` : ''
+            selectedUser ? `@${selectedUser.global_name}` : displayVal ? `@${displayVal}` : query
           }
+          placeholder="Search..."
         />
         <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronDownIcon
@@ -87,7 +89,7 @@ export default function DiscordUserIdInput({
           />
         </ComboboxButton>
 
-        <ComboboxOptions className="absolute inner-container-background z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        <ComboboxOptions className="absolute inner-container-background z-10 mt-1 max-h-60 w-max overflow-y-auto overflow-x-visible rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {data
             ?.map((d) => d.user)
             .map((u) => (
@@ -96,7 +98,7 @@ export default function DiscordUserIdInput({
                 value={u}
                 className={({ focus }) =>
                   classNames(
-                    'relative cursor-default select-none py-2 pl-3 pr-9',
+                    'relative cursor-default select-none py-2 pl-3 pr-9 whitespace-nowrap',
                     focus
                       ? 'bg-indigo-600 text-white'
                       : 'text-gray-900 dark:text-gray-400'
@@ -121,6 +123,18 @@ export default function DiscordUserIdInput({
                 )}
               </ComboboxOption>
             ))}
+
+          {data?.length === 0 && !loading && (
+            <div className="py-2 pl-3 pr-9 whitespace-nowrap text-gray-500">
+              <div className="flex items-center">
+                <QuestionMarkCircleIcon className="w-6 h-6 text-gray-400" />
+                <div className="ml-2">
+                  <p className="text-sm">No results found</p>
+                  <p className="text-xs text-gray-400">Type a different username</p>
+                </div>
+              </div>
+            </div>
+          )}
         </ComboboxOptions>
       </div>
     </Combobox>
@@ -128,13 +142,18 @@ export default function DiscordUserIdInput({
 }
 
 function DiscordUserInfoEntry({ user }: { user: DiscordUser }) {
+  console.log(user)
   return (
     <div className="flex">
-      <img
-        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
-        alt=""
-        className="h-6 w-6 flex-shrink-0 rounded-full"
-      />
+      {user.avatar ? (
+        <img
+          src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+          alt=""
+          className="h-6 w-6 flex-shrink-0 rounded-full"
+        />
+      ) : (
+        <PhotoIcon className="w-6 h-6" />
+      )}
 
       <div className="flex flex-col ml-2">
         <span className="truncate">{user.username}</span>
